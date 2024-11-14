@@ -13,5 +13,5 @@ interface BaseResult {
 
 interface BasePagingResult<E> : BaseResult {
 
-    val data: List<E>
+    val source: List<E>
 }

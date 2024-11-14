@@ -24,9 +24,14 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.*
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,10 +44,6 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.*
 import com.aaron.compose.ui.tabrow.TabRow2Defaults.tabIndicatorOffset2
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.VerticalPager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -125,7 +126,7 @@ import kotlinx.coroutines.launch
 fun TabRow2(
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colors.primarySurface,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     contentColor: Color = contentColorFor(backgroundColor),
     indicator: @Composable @UiComposable
         (tabPositions: List<TabPosition2>) -> Unit = @Composable { tabPositions ->
@@ -219,7 +220,7 @@ fun TabRow2(
 fun ScrollableTabRow2(
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colors.primarySurface,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     contentColor: Color = contentColorFor(backgroundColor),
     edgePadding: Dp = TabRow2Defaults.ScrollableTabRowPadding,
     minTabWidth: Dp = TabRow2Defaults.ScrollableTabRowMinimumTabWidth,
@@ -319,7 +320,6 @@ fun ScrollableTabRow2(
  *
  * @sample com.google.accompanist.sample.pager.PagerWithTabs
  */
-@ExperimentalPagerApi
 fun Modifier.pagerTabIndicatorOffset2(
     pagerState: PagerState,
     tabPositions: List<TabPosition2>,
@@ -333,7 +333,7 @@ fun Modifier.pagerTabIndicatorOffset2(
         val currentTab = tabPositions[currentPage]
         val previousTab = tabPositions.getOrNull(currentPage - 1)
         val nextTab = tabPositions.getOrNull(currentPage + 1)
-        val fraction = pagerState.currentPageOffset
+        val fraction = pagerState.currentPageOffsetFraction
         val indicatorWidth = if (fraction > 0 && nextTab != null) {
             lerp(currentTab.width, nextTab.width, fraction).roundToPx()
         } else if (fraction < 0 && previousTab != null) {
@@ -416,7 +416,11 @@ object TabRow2Defaults {
         thickness: Dp = DividerThickness,
         color: Color = LocalContentColor.current.copy(alpha = DividerOpacity)
     ) {
-        androidx.compose.material.Divider(modifier = modifier, thickness = thickness, color = color)
+        com.aaron.compose.ui.Divider(
+            modifier = modifier,
+            thickness = thickness,
+            color = color
+        )
     }
 
     /**

@@ -25,6 +25,11 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.*
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -83,11 +88,12 @@ fun Tab2(
     icon: @Composable (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     selectedContentColor: Color = LocalContentColor.current,
-    unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium)
+    unselectedContentColor: Color = selectedContentColor.copy(alpha = 0.5f)
 ) {
     val styledText: @Composable (() -> Unit)? = text?.let {
         @Composable {
-            val style = MaterialTheme.typography.button.copy(textAlign = TextAlign.Center)
+            MaterialTheme.typography.labelSmall
+            val style = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
             ProvideTextStyle(style, content = text)
         }
     }
@@ -145,7 +151,7 @@ fun LeadingIconTab2(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     selectedContentColor: Color = LocalContentColor.current,
-    unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium)
+    unselectedContentColor: Color = selectedContentColor.copy(alpha = 0.5f)
 ) {
     // The color of the Ripple should always the be selected color, as we want to show the color
     // before the item is considered selected, and hence before the new contentColor is
@@ -171,7 +177,7 @@ fun LeadingIconTab2(
         ) {
             icon()
             Spacer(Modifier.requiredWidth(TextDistanceFromLeadingIcon))
-            val style = MaterialTheme.typography.button.copy(textAlign = TextAlign.Center)
+            val style = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
             ProvideTextStyle(style, content = text)
         }
     }
@@ -214,7 +220,7 @@ fun Tab2(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     selectedContentColor: Color = LocalContentColor.current,
-    unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium),
+    unselectedContentColor: Color = selectedContentColor.copy(alpha = 0.5f),
     content: @Composable ColumnScope.() -> Unit
 ) {
     // The color of the Ripple should always the selected color, as we want to show the color
@@ -253,7 +259,7 @@ private fun TabTransition2(
     selected: Boolean,
     content: @Composable () -> Unit
 ) {
-    val transition = updateTransition(selected)
+    val transition = updateTransition(selected, label = "")
     val color by transition.animateColor(
         transitionSpec = {
             if (false isTransitioningTo true) {
@@ -268,13 +274,12 @@ private fun TabTransition2(
                     easing = LinearEasing
                 )
             }
-        }
+        }, label = ""
     ) {
         if (it) activeColor else inactiveColor
     }
     CompositionLocalProvider(
         LocalContentColor provides color.copy(alpha = 1f),
-        LocalContentAlpha provides color.alpha,
         content = content
     )
 }

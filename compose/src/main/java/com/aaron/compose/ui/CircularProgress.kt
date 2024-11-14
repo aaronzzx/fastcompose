@@ -5,9 +5,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProgressIndicatorDefaults.IndicatorBackgroundOpacity
-import androidx.compose.material.ProgressIndicatorDefaults.StrokeWidth
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,11 +36,11 @@ import kotlin.math.min
 fun CircularProgress(
     progress: Float,
     modifier: Modifier = Modifier,
-    strokeWidth: Dp = StrokeWidth,
+    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
     strokeCap: StrokeCap = StrokeCap.Butt,
     backgroundColor: Color = Color.Unspecified,
-    activeColor: Color = MaterialTheme.colors.primary,
-    staticColor: Color = activeColor.copy(alpha = IndicatorBackgroundOpacity),
+    activeColor: Color = MaterialTheme.colorScheme.primary,
+    staticColor: Color = activeColor.copy(alpha = 0.5f),
     startAngle: Float = -90f,
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
     smoothProgress: Boolean = true,

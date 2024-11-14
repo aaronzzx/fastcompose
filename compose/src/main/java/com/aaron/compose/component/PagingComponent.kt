@@ -34,10 +34,10 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProgressIndicatorDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
@@ -933,8 +933,8 @@ private suspend fun scrollToTop(listState: Any) {
 fun PagingLoading(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),
-    color: Color = MaterialTheme.colors.primary,
-    strokeWidth: Dp = ProgressIndicatorDefaults.StrokeWidth
+    color: Color = MaterialTheme.colorScheme.primary,
+    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth
 ) {
     Box(
         modifier = modifier.padding(contentPadding),

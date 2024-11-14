@@ -9,10 +9,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProgressIndicatorDefaults
-import androidx.compose.material.Surface
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -88,8 +88,8 @@ fun LoadingComponent(
 fun CircularLoadingLayout(
     modifier: Modifier = Modifier,
     interceptPointerInput: Boolean = true,
-    color: Color = MaterialTheme.colors.primary,
-    strokeWidth: Dp = ProgressIndicatorDefaults.StrokeWidth
+    color: Color = MaterialTheme.colorScheme.primary,
+    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth
 ) {
     Box(
         modifier = modifier.let { if (interceptPointerInput) it.pointerInput(Unit) {} else it },
@@ -98,7 +98,7 @@ fun CircularLoadingLayout(
         Surface(
             shape = CircleShape,
             color = Color.White,
-            elevation = 6.dp
+            shadowElevation = 6.dp
         ) {
             Box(
                 modifier = Modifier.size(48.dp),

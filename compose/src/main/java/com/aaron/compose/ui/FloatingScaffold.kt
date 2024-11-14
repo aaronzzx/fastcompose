@@ -31,8 +31,8 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -53,7 +53,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -61,7 +60,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.aaron.compose.utils.noLocalProvidedFor
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -82,7 +80,7 @@ import kotlin.math.abs
 @Composable
 fun FloatingScaffold(
     modifier: Modifier = Modifier,
-    scrimColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.5f),
+    scrimColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
     scrimEnter: EnterTransition = fadeIn(animationSpec = tween()),
     scrimExit: ExitTransition = fadeOut(animationSpec = tween()),
     floating: @Composable FloatingScaffoldScope.() -> Unit,
@@ -113,23 +111,23 @@ fun FloatingScaffold(
                 )
             }
 
-            val systemUiController = rememberSystemUiController()
-            LaunchedEffect(floatingTotal, systemUiController) {
-                val oldStatusState = systemUiController.statusBarDarkContentEnabled
-                val oldNavBarState = systemUiController.navigationBarDarkContentEnabled
-                snapshotFlow { floatingTotal.showScrim }
-                    .collect { showScrim ->
-                        if (showScrim) {
-                            val darkIcons =
-                                scrimColor.luminance() > 0.5f || scrimColor.alpha < 0.32f
-                            systemUiController.statusBarDarkContentEnabled = darkIcons
-                            systemUiController.navigationBarDarkContentEnabled = darkIcons
-                        } else {
-                            systemUiController.statusBarDarkContentEnabled = oldStatusState
-                            systemUiController.navigationBarDarkContentEnabled = oldNavBarState
-                        }
-                    }
-            }
+//            val systemUiController = rememberSystemUiController()
+//            LaunchedEffect(floatingTotal, systemUiController) {
+//                val oldStatusState = systemUiController.statusBarDarkContentEnabled
+//                val oldNavBarState = systemUiController.navigationBarDarkContentEnabled
+//                snapshotFlow { floatingTotal.showScrim }
+//                    .collect { showScrim ->
+//                        if (showScrim) {
+//                            val darkIcons =
+//                                scrimColor.luminance() > 0.5f || scrimColor.alpha < 0.32f
+//                            systemUiController.statusBarDarkContentEnabled = darkIcons
+//                            systemUiController.navigationBarDarkContentEnabled = darkIcons
+//                        } else {
+//                            systemUiController.statusBarDarkContentEnabled = oldStatusState
+//                            systemUiController.navigationBarDarkContentEnabled = oldNavBarState
+//                        }
+//                    }
+//            }
 
             remember { FloatingScaffoldScopeImpl(this) }.floating()
         }
@@ -169,7 +167,7 @@ fun FloatingScaffoldScope.Dialog(
     },
     label: String = "Dialog",
     properties: FloatingElementProperties = FloatingElementProperties(),
-    backgroundColor: Color = MaterialTheme.colors.surface,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
     shape: Shape = RoundedCornerShape(4.dp),
     elevation: Dp = 24.dp,
     content: @Composable () -> Unit
@@ -190,7 +188,7 @@ fun FloatingScaffoldScope.Dialog(
                 .width(280.dp),
             color = backgroundColor,
             shape = shape,
-            elevation = if (hasFocus) elevation else 0.dp
+            shadowElevation = if (hasFocus) elevation else 0.dp
         ) {
             content()
         }
@@ -209,7 +207,7 @@ fun FloatingScaffoldScope.BottomSheet(
     exit: ExitTransition = slideOutVertically { it },
     label: String = "BottomSheet",
     properties: FloatingElementProperties = FloatingElementProperties(),
-    backgroundColor: Color = MaterialTheme.colors.surface,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
     shape: Shape = RectangleShape,
     elevation: Dp = 24.dp,
     content: @Composable () -> Unit
@@ -230,7 +228,7 @@ fun FloatingScaffoldScope.BottomSheet(
                 .fillMaxWidth(),
             color = backgroundColor,
             shape = shape,
-            elevation = if (hasFocus) elevation else 0.dp
+            shadowElevation = if (hasFocus) elevation else 0.dp
         ) {
             content()
         }
@@ -256,7 +254,7 @@ fun FloatingScaffoldScope.Notification(
     swipeToDismissEnabled: Boolean = true,
     swipeToDismissTriggerDistance: Dp = 40.dp,
     onOffsetChange: ((Int) -> Unit)? = null,
-    backgroundColor: Color = MaterialTheme.colors.surface,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
     shape: Shape = RoundedCornerShape(4.dp),
     elevation: Dp = 24.dp,
     content: @Composable () -> Unit
@@ -285,7 +283,7 @@ fun FloatingScaffoldScope.Notification(
                 .padding(16.dp),
             color = backgroundColor,
             shape = shape,
-            elevation = if (hasFocus) elevation else 0.dp
+            shadowElevation = if (hasFocus) elevation else 0.dp
         ) {
             content()
         }

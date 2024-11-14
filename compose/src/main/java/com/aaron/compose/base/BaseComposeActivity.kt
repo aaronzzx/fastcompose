@@ -3,8 +3,8 @@ package com.aaron.compose.base
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import androidx.core.view.WindowCompat
 
 /**
  * @author aaronzzxup@gmail.com
@@ -21,14 +21,12 @@ abstract class BaseComposeActivity : ComponentActivity() {
     }
 
     protected open fun init(savedInstanceState: Bundle?) {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
     }
 
     @Composable
     protected open fun MainContent() {
-        BaseComposeDefaults.entrance {
-            Content()
-        }
+        Content()
     }
 
     @Composable

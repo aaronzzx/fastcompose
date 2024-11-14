@@ -18,10 +18,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -174,7 +174,7 @@ private fun DebugView(composeUIName: String) {
                 Text(
                     modifier = Modifier.align(Alignment.TopCenter),
                     text = "DEBUG",
-                    color = MaterialTheme.colors.primary,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -184,7 +184,7 @@ private fun DebugView(composeUIName: String) {
                         .align(Alignment.Center)
                         .fillMaxWidth(),
                     text = composeUIName,
-                    color = MaterialTheme.colors.primary,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 14.sp
                 )
             }
@@ -216,7 +216,7 @@ private fun DebugView(composeUIName: String) {
                 shape = CircleShape
             )
             .clipToBackground(
-                color = MaterialTheme.colors.primary,
+                color = MaterialTheme.colorScheme.primary,
                 shape = CircleShape
             )
             .run {
@@ -259,7 +259,7 @@ private fun DebugView(composeUIName: String) {
         Image(
             imageVector = Icons.Default.Build,
             contentDescription = null,
-            colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
         )
     }
 }

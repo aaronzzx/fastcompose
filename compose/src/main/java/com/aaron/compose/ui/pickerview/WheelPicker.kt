@@ -3,7 +3,7 @@ package com.aaron.compose.ui.pickerview
 import android.graphics.Typeface
 import android.view.Gravity
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,13 +31,13 @@ fun WheelPicker(
     modifier: Modifier = Modifier,
     alphaGradientEnabled: Boolean = false,
     cyclicEnabled: Boolean = false,
-    dividerColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f),
+    dividerColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
     dividerType: WheelPickerDividerType = WheelPickerDividerType.Wrap,
     dividerThickness: Dp = 1.dp,
     gravity: WheelPickerGravity = WheelPickerGravity.Center,
     itemsVisibleCount: Int = 3,
     lineSpacingMultiplier: Float = 1.6f,
-    centerFontColor: Color = MaterialTheme.colors.primary,
+    centerFontColor: Color = MaterialTheme.colorScheme.primary,
     outFontColor: Color = centerFontColor.copy(alpha = 0.35f),
     fontSize: TextUnit = 20.sp,
     fontXOffset: Dp = 0.dp,

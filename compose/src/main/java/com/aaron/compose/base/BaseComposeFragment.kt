@@ -35,9 +35,7 @@ abstract class BaseComposeFragment : Fragment() {
 
     @Composable
     protected open fun MainContent() {
-        BaseComposeDefaults.entrance {
-            Content()
-        }
+        Content()
     }
 
     @Composable

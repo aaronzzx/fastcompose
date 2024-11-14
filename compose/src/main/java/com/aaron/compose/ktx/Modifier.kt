@@ -3,7 +3,7 @@ package com.aaron.compose.ktx
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.material.ripple
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed

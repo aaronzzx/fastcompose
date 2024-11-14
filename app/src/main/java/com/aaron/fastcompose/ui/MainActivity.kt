@@ -13,6 +13,5 @@ class MainActivity : BaseComposeActivity() {
 
     @Composable
     override fun Content() {
-        FastComposeApp()
     }
 }

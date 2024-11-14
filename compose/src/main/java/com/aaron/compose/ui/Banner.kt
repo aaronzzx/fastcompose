@@ -37,7 +37,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.AsyncImage
 import com.aaron.compose.ktx.clipToBackground
 import com.aaron.compose.ktx.onClick
-import com.google.accompanist.pager.HorizontalPagerIndicator
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter

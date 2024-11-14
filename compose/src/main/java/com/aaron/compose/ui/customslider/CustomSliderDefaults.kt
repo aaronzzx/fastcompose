@@ -12,7 +12,7 @@ import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,8 +42,8 @@ fun DefaultTrack(
     interactionSource: MutableInteractionSource,
     tickFractions: List<Float>,
     enabled: Boolean,
-    colorTrack: Color = MaterialTheme.colors.primary.copy(0.5f),
-    colorProgress: Color = MaterialTheme.colors.primary,
+    colorTrack: Color = MaterialTheme.colorScheme.primary.copy(0.5f),
+    colorProgress: Color = MaterialTheme.colorScheme.primary,
     colorTickTrack: Color = Color.White,
     colorTickProgress: Color = Color.White.copy(0.5f),
     trackHeight: Dp = 4.dp,
@@ -139,7 +139,7 @@ fun DefaultThumb(
     interactionSource: MutableInteractionSource,
     enabled: Boolean,
     thumbSize: DpSize,
-    color: Color = MaterialTheme.colors.primary,
+    color: Color = MaterialTheme.colorScheme.primary,
     scaleOnPress: Float = 1f,
     animationSpec: AnimationSpec<Float> = SpringSpec(0.3f)
 ) {

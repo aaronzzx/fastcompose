@@ -163,7 +163,7 @@ interface PagingScope {
 
         val resp = onRequest(curLoadKey, curPageSize)
         if (resp.code == successCode) {
-            val dataList = resp.data
+            val dataList = resp.source
             val nextKey = onNextKey(resp, params)
             val mapped = onMapping(dataList)
             LoadResult.Page(mapped, nextKey)

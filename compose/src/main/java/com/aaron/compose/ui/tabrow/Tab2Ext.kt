@@ -2,9 +2,9 @@ package com.aaron.compose.ui.tabrow
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.LocalRippleConfiguration
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 /**
  * 禁用 Ripple 的 Tab
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NonRippleTab2(
     selected: Boolean,
@@ -22,7 +23,7 @@ fun NonRippleTab2(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     selectedContentColor: Color = LocalContentColor.current,
-    unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium),
+    unselectedContentColor: Color = selectedContentColor.copy(alpha = 0.5f),
     content: @Composable ColumnScope.() -> Unit
 ) {
     CompositionLocalProvider(LocalRippleConfiguration provides null) {
@@ -42,6 +43,7 @@ fun NonRippleTab2(
 /**
  * 禁用 Ripple 的 Tab
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NonRippleTab2(
     selected: Boolean,
@@ -52,7 +54,7 @@ fun NonRippleTab2(
     icon: @Composable (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     selectedContentColor: Color = LocalContentColor.current,
-    unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium)
+    unselectedContentColor: Color = selectedContentColor.copy(alpha = 0.5f)
 ) {
     CompositionLocalProvider(LocalRippleConfiguration provides null) {
         Tab2(
@@ -72,6 +74,7 @@ fun NonRippleTab2(
 /**
  * 禁用 Ripple 的 LeadingTab
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NonRippleLeadingIconTab2(
     selected: Boolean,
@@ -80,7 +83,7 @@ fun NonRippleLeadingIconTab2(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     selectedContentColor: Color = LocalContentColor.current,
-    unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium),
+    unselectedContentColor: Color = selectedContentColor.copy(alpha = 0.5f),
     icon: @Composable (() -> Unit),
     text: @Composable (() -> Unit)
 ) {

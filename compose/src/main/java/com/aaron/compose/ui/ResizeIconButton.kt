@@ -8,9 +8,10 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.ripple
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -128,6 +129,7 @@ fun FastIconToggleButton(
 fun ResizeIconButton(
     onSingleClick: () -> Unit,
     modifier: Modifier = Modifier,
+    colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
     onClick: (() -> Unit)? = null,
     enabled: Boolean = true,
     clickIntervalMs: Long = 800,
@@ -161,8 +163,8 @@ fun ResizeIconButton(
             ),
         contentAlignment = Alignment.Center
     ) {
-        val contentAlpha = if (enabled) LocalContentAlpha.current else ContentAlpha.disabled
-        CompositionLocalProvider(LocalContentAlpha provides contentAlpha, content = content)
+        val contentColor = if (enabled) colors.contentColor else colors.disabledContentColor
+        CompositionLocalProvider(LocalContentColor provides contentColor, content = content)
     }
 }
 
@@ -180,6 +182,7 @@ fun ResizeIconToggleButton(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
     enabled: Boolean = true,
     size: Dp = 48.dp,
     indication: Indication? = ripple(bounded = false, radius = size / 2),
@@ -202,7 +205,7 @@ fun ResizeIconToggleButton(
             ),
         contentAlignment = Alignment.Center
     ) {
-        val contentAlpha = if (enabled) LocalContentAlpha.current else ContentAlpha.disabled
-        CompositionLocalProvider(LocalContentAlpha provides contentAlpha, content = content)
+        val contentColor = if (enabled) colors.contentColor else colors.disabledContentColor
+        CompositionLocalProvider(LocalContentColor provides contentColor, content = content)
     }
 }

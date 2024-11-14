@@ -15,6 +15,14 @@ import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LeadingIconTab
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalRippleConfiguration
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -107,7 +115,7 @@ import kotlinx.coroutines.launch
 fun TabRow(
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colors.primarySurface,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     contentColor: Color = contentColorFor(backgroundColor),
     indicator: @Composable @UiComposable
         (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
@@ -201,7 +209,7 @@ fun TabRow(
 fun ScrollableTabRow(
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colors.primarySurface,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     contentColor: Color = contentColorFor(backgroundColor),
     edgePadding: Dp = TabRowDefaults.ScrollableTabRowPadding,
     indicator: @Composable @UiComposable
@@ -345,7 +353,7 @@ object TabRowDefaults {
         thickness: Dp = DividerThickness,
         color: Color = LocalContentColor.current.copy(alpha = DividerOpacity)
     ) {
-        androidx.compose.material.Divider(modifier = modifier, thickness = thickness, color = color)
+        com.aaron.compose.ui.Divider(modifier = modifier, thickness = thickness, color = color)
     }
 
     /**
@@ -549,6 +557,7 @@ private val ScrollableTabRowScrollSpec: AnimationSpec<Float> = tween(
 /**
  * 禁用 Ripple 的 Tab
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NonRippleTab(
     selected: Boolean,
@@ -557,7 +566,7 @@ fun NonRippleTab(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     selectedContentColor: Color = LocalContentColor.current,
-    unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium),
+    unselectedContentColor: Color = selectedContentColor.copy(alpha = 0.5f),
     content: @Composable ColumnScope.() -> Unit
 ) {
     CompositionLocalProvider(LocalRippleConfiguration provides null) {
@@ -577,6 +586,7 @@ fun NonRippleTab(
 /**
  * 禁用 Ripple 的 LeadingTab
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NonRippleLeadingIconTab(
     selected: Boolean,
@@ -585,7 +595,7 @@ fun NonRippleLeadingIconTab(
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     selectedContentColor: Color = LocalContentColor.current,
-    unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium),
+    unselectedContentColor: Color = selectedContentColor.copy(alpha = 0.5f),
     icon: @Composable (() -> Unit),
     text: @Composable (() -> Unit)
 ) {

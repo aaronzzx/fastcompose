@@ -7,11 +7,12 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.aaron.compose.ktx.collectAsStateWithLifecycle
 import com.aaron.compose.ktx.findActivity
+import com.blankj.utilcode.util.ToastUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,18 +50,10 @@ fun <UiState : Any, UiEvent : Any> UDFComponent(
                                 context.findActivity()?.finish()
                             }
                             is UiBaseEvent.ResToast -> {
-                                Toast.makeText(
-                                    context.applicationContext,
-                                    baseEvent.res,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                ToastUtils.showShort(baseEvent.res)
                             }
                             is UiBaseEvent.StringToast -> {
-                                Toast.makeText(
-                                    context.applicationContext,
-                                    baseEvent.text,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                ToastUtils.showShort(baseEvent.text)
                             }
                         }
                     }
@@ -106,7 +99,7 @@ sealed interface UiBaseEvent {
 
     data class StringToast(val text: String) : Toast
 
-    object Finish : UiBaseEvent
+    data object Finish : UiBaseEvent
 }
 
 fun <UiState : Any, UiEvent : Any> udfComponent(initialState: UiState): UDFComponent<UiState, UiEvent> {

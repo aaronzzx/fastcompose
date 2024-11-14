@@ -85,21 +85,21 @@ sealed class SmartRefreshType {
 
     internal abstract val intType: Int
 
-    object Idle : SmartRefreshType() {
+    data object Idle : SmartRefreshType() {
         override val intType: Int = TypeIdle
     }
 
-    object Refreshing : SmartRefreshType() {
+    data object Refreshing : SmartRefreshType() {
         override val intType: Int = TypeRefreshing
     }
 
     sealed class FinishRefresh : SmartRefreshType()
 
-    object Success : FinishRefresh() {
+    data object Success : FinishRefresh() {
         override val intType: Int = TypeSuccess
     }
 
-    object Failure : FinishRefresh() {
+    data object Failure : FinishRefresh() {
         override val intType: Int = TypeFailure
     }
 }

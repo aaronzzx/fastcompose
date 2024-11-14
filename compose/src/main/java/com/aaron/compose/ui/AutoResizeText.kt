@@ -3,7 +3,7 @@ package com.aaron.compose.ui
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.LocalTextStyle
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -72,7 +72,6 @@ fun AutoResizeText(
  * @param fitCenter 偏移到控件中间，比基线稍上一些
  * @param style 文本风格
  */
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun AutoResizeText(
     text: AnnotatedString,

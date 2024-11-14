@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProvideTextStyle
-import androidx.compose.material.Text
-import androidx.compose.material.contentColorFor
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -42,7 +42,7 @@ fun FastBadge(
     modifier: Modifier = Modifier,
     fontSize: TextUnit = 14.sp,
     maxCharacterCount: Int = 3,
-    backgroundColor: Color = MaterialTheme.colors.error,
+    backgroundColor: Color = MaterialTheme.colorScheme.error,
     contentColor: Color = contentColorFor(backgroundColor),
     contentPadding: PaddingValues = PaddingValues(horizontal = 4.dp),
     enableSystemFontScale: Boolean = false,
@@ -92,7 +92,7 @@ fun FastBadge(
 fun Badge(
     modifier: Modifier = Modifier,
     fontSize: TextUnit = 14.sp,
-    backgroundColor: Color = MaterialTheme.colors.error,
+    backgroundColor: Color = MaterialTheme.colorScheme.error,
     contentColor: Color = contentColorFor(backgroundColor),
     contentPadding: PaddingValues = PaddingValues(horizontal = 4.dp),
     enableSystemFontScale: Boolean = false,

@@ -26,9 +26,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.aaron.compose.ui.refresh.SmartRefreshState
 import com.aaron.compose.ui.refresh.SmartRefreshType
-import com.google.accompanist.swiperefresh.SwipeRefreshState
 
 /**
  * A class to encapsulate details of different indicator sizes.
@@ -104,8 +103,8 @@ fun MaterialRefreshIndicator(
     fade: Boolean = true,
     scale: Boolean = false,
     arrowEnabled: Boolean = true,
-    backgroundColor: Color = MaterialTheme.colors.surface,
-    contentColor: Color = MaterialTheme.colors.primary,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = MaterialTheme.colorScheme.primary,
     shape: Shape = MaterialTheme.shapes.small.copy(CornerSize(percent = 50)),
     refreshingOffset: Dp = 16.dp,
     largeIndication: Boolean = false,
@@ -177,7 +176,7 @@ fun MaterialRefreshIndicator(
             },
         shape = shape,
         color = backgroundColor,
-        elevation = adjustedElevation
+        shadowElevation = adjustedElevation
     ) {
         val painter = remember { CircularProgressPainter() }
         painter.arcRadius = sizes.arcRadius
@@ -202,7 +201,8 @@ fun MaterialRefreshIndicator(
         // depending on refresh state
         Crossfade(
             targetState = isRefreshing,
-            animationSpec = tween(durationMillis = CrossfadeDurationMs)
+            animationSpec = tween(durationMillis = CrossfadeDurationMs),
+            label = "indicator"
         ) { refreshing ->
             Box(
                 modifier = Modifier.fillMaxSize(),
