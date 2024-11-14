@@ -1,9 +1,12 @@
 package com.aaron.compose.ui
 
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollableDefaults
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -214,6 +217,24 @@ class CollapsingScrollState(internal val scrollState: ScrollState) {
         } else {
             expand(animate, animationSpec)
         }
+    }
+
+    suspend fun scrollTo(value: Int): Float {
+        return scrollState.scrollTo(value)
+    }
+
+    suspend fun animateScrollTo(
+        value: Int,
+        animationSpec: AnimationSpec<Float> = SpringSpec()
+    ) {
+        scrollState.animateScrollTo(value, animationSpec)
+    }
+
+    suspend fun animateScrollBy(
+        value: Float,
+        animationSpec: AnimationSpec<Float> = spring()
+    ): Float {
+        return scrollState.animateScrollBy(value, animationSpec)
     }
 
     private inline fun runOnAnimationState(
