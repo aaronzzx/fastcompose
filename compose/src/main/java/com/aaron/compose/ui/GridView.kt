@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import kotlinx.collections.immutable.ImmutableList
 import kotlin.math.ceil
 
 /**
@@ -21,7 +20,7 @@ import kotlin.math.ceil
  */
 @Composable
 fun <T> GridView(
-    data: ImmutableList<T>,
+    data: List<T>,
     maxColumns: Int,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(),

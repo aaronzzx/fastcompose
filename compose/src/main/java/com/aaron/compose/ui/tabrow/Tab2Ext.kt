@@ -4,9 +4,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentColor
-import androidx.compose.material.ripple.LocalRippleTheme
-import androidx.compose.material.ripple.RippleAlpha
-import androidx.compose.material.ripple.RippleTheme
+import androidx.compose.material.LocalRippleConfiguration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -27,7 +25,7 @@ fun NonRippleTab2(
     unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium),
     content: @Composable ColumnScope.() -> Unit
 ) {
-    CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
+    CompositionLocalProvider(LocalRippleConfiguration provides null) {
         Tab2(
             selected = selected,
             onClick = onClick,
@@ -56,7 +54,7 @@ fun NonRippleTab2(
     selectedContentColor: Color = LocalContentColor.current,
     unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium)
 ) {
-    CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
+    CompositionLocalProvider(LocalRippleConfiguration provides null) {
         Tab2(
             selected = selected,
             onClick = onClick,
@@ -86,7 +84,7 @@ fun NonRippleLeadingIconTab2(
     icon: @Composable (() -> Unit),
     text: @Composable (() -> Unit)
 ) {
-    CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
+    CompositionLocalProvider(LocalRippleConfiguration provides null) {
         LeadingIconTab2(
             selected = selected,
             onClick = onClick,
@@ -99,17 +97,4 @@ fun NonRippleLeadingIconTab2(
             unselectedContentColor = unselectedContentColor
         )
     }
-}
-
-private object NoRippleTheme : RippleTheme {
-    @Composable
-    override fun defaultColor() = Color.Unspecified
-
-    @Composable
-    override fun rippleAlpha(): RippleAlpha = RippleAlpha(
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f
-    )
 }

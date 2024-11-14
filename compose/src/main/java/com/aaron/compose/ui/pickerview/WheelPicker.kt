@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.aaron.compose.ui.pickerview.adapter.WheelAdapter
 import com.aaron.compose.ui.pickerview.view.WheelView
-import kotlinx.collections.immutable.PersistentList
 
 /**
  * @author aaronzzxup@gmail.com
@@ -27,7 +26,7 @@ import kotlinx.collections.immutable.PersistentList
 
 @Composable
 fun WheelPicker(
-    data: PersistentList<String>,
+    data: List<String>,
     onItemSelected: (String) -> Unit,
     modifier: Modifier = Modifier,
     alphaGradientEnabled: Boolean = false,

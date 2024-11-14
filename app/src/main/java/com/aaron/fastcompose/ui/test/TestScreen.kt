@@ -58,8 +58,6 @@ import com.aaron.fastcompose.R
 import com.blankj.utilcode.util.ToastUtils
 import com.blankj.utilcode.util.VibrateUtils
 import com.google.accompanist.navigation.animation.composable
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
@@ -244,9 +242,9 @@ private fun Wheels() {
                 .fillMaxSize(),
 //                    horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val year = (1970..2023).map { "${it}" }.toPersistentList()
-            val month = (1..12).map { "${formatInt(it)}" }.toPersistentList()
-            val day = (1..30).map { "${formatInt(it)}" }.toPersistentList()
+            val year = (1970..2023).map { "${it}" }.toList()
+            val month = (1..12).map { "${formatInt(it)}" }.toList()
+            val day = (1..30).map { "${formatInt(it)}" }.toList()
             val curvature = 0.05f
             MyWheel(
                 modifier = Modifier
@@ -291,7 +289,7 @@ private fun Wheels() {
 @Composable
 private fun MyWheel(
     label: String,
-    data: PersistentList<String>,
+    data: List<String>,
     onSelected: (String) -> Unit,
     modifier: Modifier = Modifier,
     style: RollPickerStyle = RollPickerStyle.Wheel(),

@@ -1243,10 +1243,10 @@ open class HorizontalPagingStateFooter : PagingStateFooter() {
             )
         }
     }
-    override val loadMore: ((PagingComponent<*>) -> Unit)? = null
-    override val loadError: ((PagingComponent<*>) -> Unit)? = null
-    override val noMoreData: ((PagingComponent<*>) -> Unit)? = null
-    override val waitingRefresh: ((PagingComponent<*>) -> Unit)? = null
+    override val loadMore: (@Composable (PagingComponent<*>) -> Unit)? = null
+    override val loadError: (@Composable (PagingComponent<*>) -> Unit)? = null
+    override val noMoreData: (@Composable (PagingComponent<*>) -> Unit)? = null
+    override val waitingRefresh: (@Composable (PagingComponent<*>) -> Unit)? = null
 }
 
 @Composable

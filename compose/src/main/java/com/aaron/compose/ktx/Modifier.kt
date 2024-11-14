@@ -3,7 +3,7 @@ package com.aaron.compose.ktx
 import android.graphics.BlurMaskFilter
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.ripple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -38,43 +39,41 @@ fun Modifier.shadow(
     offsetX: Dp = 0.dp,
     offsetY: Dp = 0.dp,
     spread: Dp = 0.dp
-) = if (blurRadius <= 0.dp) this else this.then(
-    drawWithCache {
-        val paint = Paint()
-        val frameworkPaint = paint.asFrameworkPaint()
-        val cornerRadiusPixel = cornerRadius.toPx()
-        val blurRadiusPixel = blurRadius.toPx()
-        val spreadPixel = spread.toPx()
-        val leftPixel = (0f - spreadPixel) + offsetX.toPx()
-        val topPixel = (0f - spreadPixel) + offsetY.toPx()
-        val rightPixel = (this.size.width + spreadPixel)
-        val bottomPixel = (this.size.height + spreadPixel)
-        val argbColor = color.toArgb()
-        onDrawBehind {
-            drawIntoCanvas {
-                if (blurRadiusPixel != 0f) {
-                    /*
-                     * The feature maskFilter used below to apply the blur effect only works
-                     * with hardware acceleration disabled.
-                     */
-                    frameworkPaint.maskFilter =
-                        BlurMaskFilter(blurRadiusPixel, BlurMaskFilter.Blur.NORMAL)
-                }
-
-                frameworkPaint.color = argbColor
-                it.drawRoundRect(
-                    left = leftPixel,
-                    top = topPixel,
-                    right = rightPixel,
-                    bottom = bottomPixel,
-                    radiusX = cornerRadiusPixel,
-                    radiusY = cornerRadiusPixel,
-                    paint
-                )
+) = if (blurRadius <= 0.dp) this else this.drawWithCache {
+    val paint = Paint()
+    val frameworkPaint = paint.asFrameworkPaint()
+    val cornerRadiusPixel = cornerRadius.toPx()
+    val blurRadiusPixel = blurRadius.toPx()
+    val spreadPixel = spread.toPx()
+    val leftPixel = (0f - spreadPixel) + offsetX.toPx()
+    val topPixel = (0f - spreadPixel) + offsetY.toPx()
+    val rightPixel = (this.size.width + spreadPixel)
+    val bottomPixel = (this.size.height + spreadPixel)
+    val argbColor = color.toArgb()
+    onDrawBehind {
+        drawIntoCanvas {
+            if (blurRadiusPixel != 0f) {
+                /*
+                 * The feature maskFilter used below to apply the blur effect only works
+                 * with hardware acceleration disabled.
+                 */
+                frameworkPaint.maskFilter =
+                    BlurMaskFilter(blurRadiusPixel, BlurMaskFilter.Blur.NORMAL)
             }
+
+            frameworkPaint.color = argbColor
+            it.drawRoundRect(
+                left = leftPixel,
+                top = topPixel,
+                right = rightPixel,
+                bottom = bottomPixel,
+                radiusX = cornerRadiusPixel,
+                radiusY = cornerRadiusPixel,
+                paint
+            )
         }
     }
-)
+}
 
 /**
  * 综合点击，单击防抖
@@ -101,19 +100,15 @@ fun Modifier.onCombinedSingleClick(
 ) = composed {
     combinedClickable(
         enabled = enabled,
-        interactionSource = interactionSource ?: remember { MutableInteractionSource() },
+        interactionSource = interactionSource,
         indication = if (!enableRipple) null else {
-            rememberRipple(
-                rippleBounded,
-                rippleRadius,
-                rippleColor
-            )
+            ripple(rippleBounded, rippleRadius, rippleColor)
         },
         onLongClick = onLongClick,
         onDoubleClick = onDoubleClick,
         onClick = run {
             var clickTime by remember {
-                mutableStateOf(0L)
+                mutableLongStateOf(0L)
             }
             val block = {
                 onClick?.invoke()
@@ -146,20 +141,14 @@ fun Modifier.onClick(
     rippleRadius: Dp = Dp.Unspecified,
     interactionSource: MutableInteractionSource? = null,
     onClick: () -> Unit
-) = composed {
-    clickable(
-        enabled = enabled,
-        interactionSource = interactionSource ?: remember { MutableInteractionSource() },
-        indication = if (!enableRipple) null else {
-            rememberRipple(
-                rippleBounded,
-                rippleRadius,
-                rippleColor
-            )
-        },
-        onClick = onClick
-    )
-}
+) = clickable(
+    enabled = enabled,
+    interactionSource = interactionSource,
+    indication = if (!enableRipple) null else {
+        ripple(rippleBounded, rippleRadius, rippleColor)
+    },
+    onClick = onClick
+)
 
 /**
  * 带水波纹点击事件
@@ -179,33 +168,38 @@ fun Modifier.onSingleClick(
     rippleColor: Color = Color.Unspecified,
     rippleBounded: Boolean = true,
     rippleRadius: Dp = Dp.Unspecified,
+    isAutoClearFocus: Boolean = true,
     interactionSource: MutableInteractionSource? = null,
     onClick: () -> Unit
 ) = composed {
+    val focusManager = LocalFocusManager.current
     clickable(
         enabled = enabled,
-        interactionSource = interactionSource ?: remember { MutableInteractionSource() },
+        interactionSource = interactionSource,
         indication = if (!enableRipple) null else {
-            rememberRipple(
-                rippleBounded,
-                rippleRadius,
-                rippleColor
-            )
+            ripple(rippleBounded, rippleRadius, rippleColor)
         },
         onClick = run {
             var clickTime by remember {
-                mutableStateOf(0L)
+                mutableLongStateOf(0L)
             }
             val block = {
+                if (isAutoClearFocus) {
+                    focusManager.clearFocus(false)
+                }
+
                 val curTime = System.currentTimeMillis()
                 if (curTime - clickTime > clickIntervalMs) {
                     clickTime = curTime
                     onClick()
                 }
             }
+
             block
+
         }
     )
+
 }
 
 /**

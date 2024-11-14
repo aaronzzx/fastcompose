@@ -1,9 +1,6 @@
 package com.aaron.fastcompose.ui.paging
 
-import com.aaron.compose.utils.typeadapter.ImmutableListTypeAdapterFactory
 import com.google.gson.GsonBuilder
-import com.google.gson.internal.ConstructorConstructor
-import com.google.gson.internal.bind.CollectionTypeAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -21,15 +18,7 @@ interface GitHubService {
         private const val BASE_URL = "https://api.github.com/"
 
         fun create(): GitHubService {
-            val gson = GsonBuilder()
-                .registerTypeAdapterFactory(
-                    ImmutableListTypeAdapterFactory(
-                        CollectionTypeAdapterFactory(
-                            ConstructorConstructor(mapOf())
-                        )
-                    )
-                )
-                .create()
+            val gson = GsonBuilder().create()
             return Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))

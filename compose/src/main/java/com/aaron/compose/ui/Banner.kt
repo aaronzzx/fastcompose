@@ -38,7 +38,6 @@ import coil.compose.AsyncImage
 import com.aaron.compose.ktx.clipToBackground
 import com.aaron.compose.ktx.onClick
 import com.google.accompanist.pager.HorizontalPagerIndicator
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
@@ -58,7 +57,7 @@ import kotlinx.coroutines.flow.filter
  */
 @Composable
 fun Banner(
-    urlList: ImmutableList<String?>,
+    urlList: List<String?>,
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color.White,
     shape: Shape = RoundedCornerShape(8.dp),

@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -44,8 +44,8 @@ fun FastIconButton(
     enabled: Boolean = true,
     clickIntervalMs: Long = 800,
     size: Dp = 48.dp,
-    indication: Indication? = rememberRipple(bounded = false, radius = size / 2),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    indication: Indication? = ripple(bounded = false, radius = size / 2),
+    interactionSource: MutableInteractionSource? = null,
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Inside,
     alpha: Float = 1.0f,
@@ -89,8 +89,8 @@ fun FastIconToggleButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     size: Dp = 48.dp,
-    indication: Indication? = rememberRipple(bounded = false, radius = size / 2),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    indication: Indication? = ripple(bounded = false, radius = size / 2),
+    interactionSource: MutableInteractionSource? = null,
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Inside,
     alpha: Float = 1.0f,
@@ -132,8 +132,8 @@ fun ResizeIconButton(
     enabled: Boolean = true,
     clickIntervalMs: Long = 800,
     size: Dp = 48.dp,
-    indication: Indication? = rememberRipple(bounded = false, radius = size / 2),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    indication: Indication? = ripple(bounded = false, radius = size / 2),
+    interactionSource: MutableInteractionSource? = null,
     content: @Composable () -> Unit
 ) {
     Box(
@@ -142,7 +142,7 @@ fun ResizeIconButton(
             .clickable(
                 onClick = run {
                     var clickTime by remember {
-                        mutableStateOf(0L)
+                        mutableLongStateOf(0L)
                     }
                     val block = {
                         onClick?.invoke()
@@ -182,8 +182,8 @@ fun ResizeIconToggleButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     size: Dp = 48.dp,
-    indication: Indication? = rememberRipple(bounded = false, radius = size / 2),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    indication: Indication? = ripple(bounded = false, radius = size / 2),
+    interactionSource: MutableInteractionSource? = null,
     content: @Composable () -> Unit
 ) {
     Box(

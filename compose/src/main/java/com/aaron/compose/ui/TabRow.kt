@@ -15,9 +15,6 @@ import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.*
-import androidx.compose.material.ripple.LocalRippleTheme
-import androidx.compose.material.ripple.RippleAlpha
-import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -563,7 +560,7 @@ fun NonRippleTab(
     unselectedContentColor: Color = selectedContentColor.copy(alpha = ContentAlpha.medium),
     content: @Composable ColumnScope.() -> Unit
 ) {
-    CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
+    CompositionLocalProvider(LocalRippleConfiguration provides null) {
         Tab(
             selected = selected,
             onClick = onClick,
@@ -592,7 +589,7 @@ fun NonRippleLeadingIconTab(
     icon: @Composable (() -> Unit),
     text: @Composable (() -> Unit)
 ) {
-    CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
+    CompositionLocalProvider(LocalRippleConfiguration provides null) {
         LeadingIconTab(
             selected = selected,
             onClick = onClick,
@@ -605,17 +602,4 @@ fun NonRippleLeadingIconTab(
             unselectedContentColor = unselectedContentColor
         )
     }
-}
-
-private object NoRippleTheme : RippleTheme {
-    @Composable
-    override fun defaultColor() = Color.Unspecified
-
-    @Composable
-    override fun rippleAlpha(): RippleAlpha = RippleAlpha(
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f
-    )
 }
