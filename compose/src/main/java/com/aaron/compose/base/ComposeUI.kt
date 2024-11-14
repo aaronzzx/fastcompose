@@ -3,6 +3,7 @@ package com.aaron.compose.base
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.os.Build
 import androidx.compose.animation.core.animate
 import androidx.compose.foundation.Image
@@ -128,7 +129,8 @@ interface ComposeUI : Serializable {
         Box(modifier = Modifier.fillMaxSize()) {
             Content()
 
-            if (debug) {
+            val debuggable = LocalContext.current.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
+            if (debuggable && debug) {
                 DebugView(composeUIName = this@ComposeUI::class.java.name)
             }
         }
