@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id "org.jetbrains.kotlin.kapt"
     id "org.jetbrains.kotlin.plugin.compose"
+    id "maven-publish"
 }
 
 android {
@@ -97,4 +98,17 @@ dependencies {
 //    api "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 
     api "com.blankj:utilcodex:1.30.6"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.aaron.fastcompose'
+                artifactId = 'compose'
+                version = 'SNAPSHOT'
+            }
+        }
+    }
 }
