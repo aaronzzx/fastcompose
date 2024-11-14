@@ -7,13 +7,13 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
     namespace "com.aaron.fastcompose"
 
     defaultConfig {
         applicationId "com.aaron.fastcompose"
-        minSdk 21
-        targetSdk 34
+        minSdk 24
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 

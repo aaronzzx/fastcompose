@@ -1,5 +1,6 @@
 package com.aaron.compose.base
 
+//import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -23,7 +24,6 @@ import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,7 +45,6 @@ import androidx.compose.ui.window.Dialog
 import com.aaron.compose.base.ComposeUIScope.Companion.start
 import com.aaron.compose.ktx.clipToBackground
 import com.aaron.compose.ktx.onSingleClick
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 import java.io.Serializable
 import kotlin.math.roundToInt
@@ -135,18 +134,18 @@ interface ComposeUI : Serializable {
             }
         }
 
-        val systemUiController = rememberSystemUiController()
-        SideEffect {
-            systemUiController.setStatusBarColor(
-                color = Color.Transparent,
-                darkIcons = true
-            )
-            systemUiController.setNavigationBarColor(
-                color = Color.Transparent,
-                darkIcons = true,
-                navigationBarContrastEnforced = false
-            )
-        }
+//        val systemUiController = rememberSystemUiController()
+//        SideEffect {
+//            systemUiController.setStatusBarColor(
+//                color = Color.Transparent,
+//                darkIcons = true
+//            )
+//            systemUiController.setNavigationBarColor(
+//                color = Color.Transparent,
+//                darkIcons = true,
+//                navigationBarContrastEnforced = false
+//            )
+//        }
     }
 
     @Composable
