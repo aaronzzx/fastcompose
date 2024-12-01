@@ -92,6 +92,23 @@ open class UDFComponentDefaults : Defaults() {
         onEvent: suspend (event: UiEvent) -> Unit,
         content: @Composable (state: UiState) -> Unit
     ) {
+        UDFComponentImpl(
+            component = component,
+            activeState = activeState,
+            onBaseEvent = onBaseEvent,
+            onEvent = onEvent,
+            content = content
+        )
+    }
+
+    @Composable
+    protected fun <UiState : Any, UiEvent : Any> UDFComponentImpl(
+        component: UDFComponent<UiState, UiEvent>,
+        activeState: Lifecycle.State,
+        onBaseEvent: suspend (baseEvent: Any) -> Boolean,
+        onEvent: suspend (event: UiEvent) -> Unit,
+        content: @Composable (state: UiState) -> Unit
+    ) {
         val context = LocalContext.current
         val lifecycleOwner = LocalLifecycleOwner.current
         val curOnBaseEvent by rememberUpdatedState(onBaseEvent)
