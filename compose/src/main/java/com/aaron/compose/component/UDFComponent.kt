@@ -10,6 +10,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import com.aaron.compose.base.Defaults
+import com.aaron.compose.base.DefaultsTarget
 import com.aaron.compose.ktx.collectAsStateWithLifecycle
 import com.aaron.compose.ktx.findActivity
 import com.blankj.utilcode.util.ToastUtils
@@ -31,46 +33,18 @@ import kotlinx.coroutines.launch
 @Composable
 fun <UiState : Any, UiEvent : Any> UDFComponent(
     component: UDFComponent<UiState, UiEvent>,
-    activeState: Lifecycle.State = Lifecycle.State.STARTED,
-    onBaseEvent: (baseEvent: Any) -> Boolean = { false },
-    onEvent: (event: UiEvent) -> Unit,
+    activeState: Lifecycle.State = UDFComponentDefaults.instance.activeState,
+    onBaseEvent: suspend (baseEvent: Any) -> Boolean = UDFComponentDefaults.instance.onBaseEvent,
+    onEvent: suspend (event: UiEvent) -> Unit,
     content: @Composable (state: UiState) -> Unit
 ) {
-    val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val curOnBaseEvent by rememberUpdatedState(onBaseEvent)
-    val curOnEvent by rememberUpdatedState(onEvent)
-    LaunchedEffect(key1 = component) {
-        launch {
-            lifecycleOwner.repeatOnLifecycle(activeState) {
-                component.baseEvent.collect { baseEvent ->
-                    if (!curOnBaseEvent(baseEvent) && baseEvent is UiBaseEvent) {
-                        when (baseEvent) {
-                            UiBaseEvent.Finish -> {
-                                context.findActivity()?.finish()
-                            }
-                            is UiBaseEvent.ResToast -> {
-                                ToastUtils.showShort(baseEvent.res)
-                            }
-                            is UiBaseEvent.StringToast -> {
-                                ToastUtils.showShort(baseEvent.text)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        launch {
-            lifecycleOwner.repeatOnLifecycle(activeState) {
-                component.event.collect { event ->
-                    curOnEvent(event)
-                }
-            }
-        }
-    }
-
-    val state by component.state.collectAsStateWithLifecycle(minActiveState = activeState)
-    content(state)
+    UDFComponentDefaults.instance.UDFComponent(
+        component = component,
+        activeState = activeState,
+        onBaseEvent = onBaseEvent,
+        onEvent = onEvent,
+        content = content
+    )
 }
 
 /**
@@ -100,6 +74,64 @@ sealed interface UiBaseEvent {
     data class StringToast(val text: String) : Toast
 
     data object Finish : UiBaseEvent
+}
+
+open class UDFComponentDefaults : Defaults() {
+
+    companion object : DefaultsTarget<UDFComponentDefaults>(UDFComponentDefaults())
+
+    open val activeState: Lifecycle.State = Lifecycle.State.STARTED
+
+    val onBaseEvent: suspend (baseEvent: Any) -> Boolean = { false }
+
+    @Composable
+    open fun <UiState : Any, UiEvent : Any> UDFComponent(
+        component: UDFComponent<UiState, UiEvent>,
+        activeState: Lifecycle.State,
+        onBaseEvent: suspend (baseEvent: Any) -> Boolean,
+        onEvent: suspend (event: UiEvent) -> Unit,
+        content: @Composable (state: UiState) -> Unit
+    ) {
+        val context = LocalContext.current
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val curOnBaseEvent by rememberUpdatedState(onBaseEvent)
+        val curOnEvent by rememberUpdatedState(onEvent)
+        LaunchedEffect(key1 = component) {
+            launch {
+                lifecycleOwner.repeatOnLifecycle(activeState) {
+                    component.baseEvent.collect { baseEvent ->
+                        launch {
+                            if (baseEvent is UiBaseEvent && !curOnBaseEvent(baseEvent)) {
+                                when (baseEvent) {
+                                    UiBaseEvent.Finish -> {
+                                        context.findActivity()?.finish()
+                                    }
+                                    is UiBaseEvent.ResToast -> {
+                                        ToastUtils.showShort(baseEvent.res)
+                                    }
+                                    is UiBaseEvent.StringToast -> {
+                                        ToastUtils.showShort(baseEvent.text)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            launch {
+                lifecycleOwner.repeatOnLifecycle(activeState) {
+                    component.event.collect { event ->
+                        launch {
+                            curOnEvent(event)
+                        }
+                    }
+                }
+            }
+        }
+
+        val state by component.state.collectAsStateWithLifecycle(minActiveState = activeState)
+        content(state)
+    }
 }
 
 fun <UiState : Any, UiEvent : Any> udfComponent(initialState: UiState): UDFComponent<UiState, UiEvent> {
