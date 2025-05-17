@@ -5,8 +5,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
-        android:name=".App"
+        android:name=".FastComposeApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,18 +19,9 @@
         android:theme="@style/Theme.FastCompose"
         tools:targetApi="31">
         <activity
-            android:name=".paging3.PagingActivity"
-            android:exported="false"
-            android:label="PagingActivity"
-            android:theme="@style/Theme.FastCompose" />
-        <activity
-            android:name=".SecondActivity"
-            android:exported="false"
-            android:label="@string/title_activity_second"
-            android:theme="@style/Theme.FastCompose" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

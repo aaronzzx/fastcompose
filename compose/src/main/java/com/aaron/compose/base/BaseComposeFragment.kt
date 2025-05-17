@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import com.aaron.compose.ui.FragmentComposeView
 
 /**
  * @author aaronzzxup@gmail.com
@@ -19,7 +18,9 @@ abstract class BaseComposeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentComposeView(requireContext())
+    ): View {
+        return ComposeView(requireContext())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
