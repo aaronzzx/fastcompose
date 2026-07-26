@@ -1,59 +1,53 @@
 package com.aaron.fastcompose.paging3
 
-import android.util.Log
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
 import com.aaron.compose.base.BaseComposeActivity
 import com.aaron.compose.ktx.clipToBackground
-import com.aaron.compose.ktx.itemsIndexed
 import com.aaron.compose.ktx.onClick
-import com.aaron.compose.ui.SmartRefresh
-import com.aaron.compose.ui.TopBar
-import com.aaron.compose.ui.rememberSmartRefreshState
-import com.aaron.fastcompose.JialaiIndicator
+import com.aaron.compose.ui.refresh.SmartRefresh
+import com.aaron.compose.ui.refresh.SmartRefreshType
+import com.aaron.compose.ui.refresh.rememberSmartRefreshState
 import com.aaron.fastcompose.R
 import com.aaron.fastcompose.ui.theme.FastComposeTheme
-import com.google.accompanist.placeholder.placeholder
 
 /**
  * @author aaronzzxup@gmail.com
@@ -61,23 +55,27 @@ import com.google.accompanist.placeholder.placeholder
  */
 class PagingActivity : BaseComposeActivity() {
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
         FastComposeTheme {
             Surface(
-                modifier = Modifier
-                    .fillMaxSize(),
-                elevation = 4.dp,
-                color = MaterialTheme.colors.background
+                modifier = Modifier.fillMaxSize(),
+                shadowElevation = 4.dp,
+                color = MaterialTheme.colorScheme.background
             ) {
                 Column {
-                    TopBar(
-                        modifier = Modifier.zIndex(1f),
-                        title = "PagingActivity",
-                        startIcon = R.drawable.back,
-                        contentPadding = WindowInsets.statusBars.asPaddingValues(),
-                        onStartIconClick = {
-                            finishAfterTransition()
+                    TopAppBar(
+                        title = {
+                            Text(text = "PagingActivity")
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = ::finishAfterTransition) {
+                                Icon(
+                                    painter = painterResource(R.drawable.back),
+                                    contentDescription = null
+                                )
+                            }
                         }
                     )
                     SmartRefreshList()
@@ -87,47 +85,47 @@ class PagingActivity : BaseComposeActivity() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SmartRefreshList(vm: PagingVM = viewModel()) {
-    val refreshState = rememberSmartRefreshState(isRefreshing = false)
+    var refreshType by remember {
+        mutableStateOf<SmartRefreshType>(SmartRefreshType.Idle)
+    }
+    val refreshState = rememberSmartRefreshState(type = refreshType)
     val listState = rememberLazyListState()
     val articles = vm.repos.collectAsLazyPagingItems()
     val loadState = articles.loadState
 
-    val append = loadState.append
-
     val loadStateRefresh = loadState.refresh
-    if (refreshState.isRefreshing) {
-        if (loadStateRefresh is LoadState.NotLoading) {
-            LaunchedEffect(Unit) {
+    LaunchedEffect(loadStateRefresh) {
+        when {
+            refreshType is SmartRefreshType.Refreshing
+                    && loadStateRefresh is LoadState.NotLoading -> {
                 listState.scrollToItem(0)
+                refreshType = SmartRefreshType.Success
             }
-            refreshState.success()
-        } else if (loadStateRefresh is LoadState.Error) {
-            refreshState.failure()
+            refreshType is SmartRefreshType.Refreshing
+                    && loadStateRefresh is LoadState.Error -> {
+                refreshType = SmartRefreshType.Failure
+            }
+            refreshType is SmartRefreshType.Idle
+                    && loadStateRefresh is LoadState.Loading
+                    && !vm.init -> {
+                refreshType = SmartRefreshType.Refreshing
+            }
         }
-    } else if (loadStateRefresh is LoadState.Loading && !vm.init) {
-        refreshState.refresh()
     }
-
-    if (vm.init) {
+    LaunchedEffect(Unit) {
         vm.init = false
     }
 
     SmartRefresh(
         state = refreshState,
         onRefresh = {
+            refreshType = SmartRefreshType.Refreshing
             articles.refresh()
         },
-        indicator = { smartRefreshState, triggerPixels, maxDragPixels, height ->
-            JialaiIndicator(
-                refreshState = smartRefreshState,
-                triggerPixels = triggerPixels,
-                maxDragPixels = maxDragPixels,
-                height = height,
-                modifier = Modifier
-            )
+        onIdle = {
+            refreshType = SmartRefreshType.Idle
         },
         indicatorHeight = 100.dp,
         modifier = Modifier
@@ -138,19 +136,19 @@ private fun SmartRefreshList(vm: PagingVM = viewModel()) {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            val spanCount = 2
             LazyColumn(
                 state = listState,
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                itemsIndexed(
-                    items = articles,
-                    key = { index, item ->
-                        item.id
+                items(
+                    count = articles.itemCount,
+                    key = { index ->
+                        articles.peek(index)?.id ?: index
                     }
-                ) { index, article ->
+                ) { index ->
+                    val article = articles[index]
                     Box(
                         modifier = Modifier
 //                            .animateItemPlacement()

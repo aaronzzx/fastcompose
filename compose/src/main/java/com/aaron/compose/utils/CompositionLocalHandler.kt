@@ -4,6 +4,7 @@ import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.OverscrollConfiguration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
@@ -82,7 +83,7 @@ fun FitScreenHandler(
 @Composable
 private fun createDefaultDensity() = Density(
     density = LocalDensity.current.density,
-    fontScale = LocalContext.current.resources.configuration.fontScale
+    fontScale = LocalConfiguration.current.fontScale
 )
 
 /**

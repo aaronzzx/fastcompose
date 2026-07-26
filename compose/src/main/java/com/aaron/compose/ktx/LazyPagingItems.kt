@@ -11,14 +11,13 @@ import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
 import androidx.paging.PagingData
-import androidx.paging.PagingDataDiffer
 import androidx.paging.compose.LazyPagingItems
 import kotlinx.coroutines.flow.Flow
 
 /**
  * Adds the [LazyPagingItems] and their content to the scope. The range from 0 (inclusive) to
  * [LazyPagingItems.itemCount] (exclusive) always represents the full range of presentable items,
- * because every event from [PagingDataDiffer] will trigger a recomposition.
+ * because every update from [LazyPagingItems] will trigger a recomposition.
  *
  * @sample androidx.paging.compose.samples.ItemsDemo
  *
@@ -68,8 +67,8 @@ fun <T : Any> LazyGridScope.items(
 /**
  * Adds the [LazyPagingItems] and their content to the scope where the content of an item is
  * aware of its local index. The range from 0 (inclusive) to [LazyPagingItems.itemCount] (exclusive)
- * always represents the full range of presentable items, because every event from
- * [PagingDataDiffer] will trigger a recomposition.
+ * always represents the full range of presentable items, because every update from
+ * [LazyPagingItems] will trigger a recomposition.
  *
  * @sample androidx.paging.compose.samples.ItemsIndexedDemo
  *

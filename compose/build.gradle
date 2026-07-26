@@ -36,18 +36,13 @@ android {
     kotlinOptions {
         jvmTarget = '17'
         freeCompilerArgs += [
-                "-Xallow-jvm-ir-dependencies",
-                "-Xskip-prerelease-check",
-                "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-Xuse-experimental=androidx.compose.animation.ExperimentalAnimationApi",
-                "-Xopt-in=dev.chrisbanes.snapper.ExperimentalSnapperApi",
-                "-Xopt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-                "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-                "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi",
-                "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi",
-                "-Xopt-in=kotlin.RequiresOptIn",
-                "-Xopt-in=kotlin.contracts.ExperimentalContracts",
-                "-Xopt-in=androidx.paging.ExperimentalPagingApi"
+                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+                "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+                "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+                "-opt-in=kotlin.RequiresOptIn",
+                "-opt-in=kotlin.contracts.ExperimentalContracts",
+                "-opt-in=androidx.paging.ExperimentalPagingApi"
         ]
     }
     packagingOptions {
@@ -55,9 +50,17 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    publishing {
+        singleVariant("release") {}
+    }
 }
 
 dependencies {
+    def composeBom = platform("androidx.compose:compose-bom:$compose_bom_version")
+    api composeBom
+    androidTestApi composeBom
+    debugApi composeBom
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
@@ -67,24 +70,26 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7'
 
     // Compose
-    api "androidx.compose.ui:ui:$compose_version"
-    api "androidx.compose.ui:ui-util:$compose_version"
-    api "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    api "androidx.compose.ui:ui-viewbinding:$compose_version"
-//    api "androidx.compose.material:material:$compose_version"
-    api "androidx.compose.material3:material3:1.3.1"
-    api "androidx.compose.runtime:runtime-livedata:$compose_version"
+    api "androidx.compose.ui:ui"
+    api "androidx.compose.ui:ui-util"
+    api "androidx.compose.ui:ui-tooling-preview"
+    api "androidx.compose.ui:ui-viewbinding"
+    api "androidx.compose.material:material-icons-extended"
+    api "androidx.compose.material3:material3"
+    api "androidx.compose.runtime:runtime-livedata"
 
-    androidTestApi "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugApi "androidx.compose.ui:ui-tooling:$compose_version"
-    debugApi "androidx.compose.ui:ui-test-manifest:$compose_version"
+    androidTestApi "androidx.compose.ui:ui-test-junit4"
+    debugApi "androidx.compose.ui:ui-tooling"
+    debugApi "androidx.compose.ui:ui-test-manifest"
 
     api "com.google.accompanist:accompanist-drawablepainter:$accompanist_version"
     api "com.google.accompanist:accompanist-permissions:$accompanist_version"
 
-//    api "androidx.paging:paging-compose:1.0.0-alpha16"
-//    api "androidx.paging:paging-runtime-ktx:3.1.1"
-//    api "androidx.paging:paging-common:3.1.1"
+    api "androidx.paging:paging-compose:$paging_version"
+    api "androidx.paging:paging-runtime:$paging_version"
+
+    api "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
 
     api "net.engawapg.lib:zoomable:1.6.1"
 

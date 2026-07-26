@@ -10,7 +10,7 @@ import androidx.paging.RemoteMediator
 import androidx.paging.RemoteMediator.MediatorResult
 import androidx.room.RoomDatabase
 import androidx.room.withTransaction
-import com.aaron.compose.architecture.BaseResult
+import com.aaron.compose.base.BaseResult
 import com.aaron.compose.defaults.Defaults
 
 fun <I : BaseResult, O : Any> buildWriteablePager(
@@ -57,7 +57,7 @@ fun <K : Any, V : Any> buildBaseWriteablePager(
     initialKey: K? = null,
     onPagingSource: () -> PagingSource<K, V>,
     onNextKey: (pageKey: K?, state: PagingState<K, V>) -> K?,
-    onRequest: suspend (loadParams: LoadParams<K, V>) -> MediatorResult
+    onRequest: suspend (loadParams: RemoteMediatorLoadParams<K, V>) -> MediatorResult
 ): Pager<K, V> = Pager(
     config = PagingConfig(
         pageSize = config.pageSize,
@@ -81,7 +81,7 @@ fun <K : Any, V : Any> buildRemoteMediator(
     minRequestTimeMillis: Long = PagingConfigDefaults.DefaultRequestTimeMillis,
     initialKey: K? = null,
     onNextKey: (pageKey: K?, state: PagingState<K, V>) -> K?,
-    onRequest: suspend (loadParams: LoadParams<K, V>) -> MediatorResult
+    onRequest: suspend (loadParams: RemoteMediatorLoadParams<K, V>) -> MediatorResult
 ): RemoteMediator<K, V> = object : RemoteMediator<K, V>() {
 
     private var lastPageKey: K? = null
@@ -100,7 +100,9 @@ fun <K : Any, V : Any> buildRemoteMediator(
             }
             val pageKey = loadKey ?: initialKey
             val pageSize = state.config.pageSize
-            val result = onRequest(LoadParams(loadType, state, pageKey, pageSize))
+            val result = onRequest(
+                RemoteMediatorLoadParams(loadType, state, pageKey, pageSize)
+            )
             makeSureTime(startTime, minRequestTimeMillis)
             lastPageKey = pageKey
             result
@@ -111,7 +113,7 @@ fun <K : Any, V : Any> buildRemoteMediator(
     }
 }
 
-data class LoadParams<K : Any, V : Any>(
+data class RemoteMediatorLoadParams<K : Any, V : Any>(
     val loadType: LoadType,
     val state: PagingState<K, V>,
     val pageKey: K?,
@@ -134,7 +136,7 @@ private class RemoteMediatorPagingSource<K : Any, V : Any>(
     override val jumpingSupported: Boolean
         get() = delegate.jumpingSupported
 
-    override suspend fun load(params: LoadParams<K>): LoadResult<K, V> {
+    override suspend fun load(params: PagingSource.LoadParams<K>): LoadResult<K, V> {
         Log.d("zzx", "key: ${params.key}")
         return delegate.load(params)
     }

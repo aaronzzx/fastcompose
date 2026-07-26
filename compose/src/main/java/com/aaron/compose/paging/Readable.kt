@@ -6,7 +6,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingSource.LoadParams
 import androidx.paging.PagingSource.LoadResult
 import androidx.paging.PagingState
-import com.aaron.compose.architecture.BaseResult
+import com.aaron.compose.base.BaseResult
 import com.aaron.compose.defaults.Defaults
 
 /**
